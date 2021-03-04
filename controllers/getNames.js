@@ -1,27 +1,25 @@
-let allData = [];
-let xmlhttp = new XMLHttpRequest();
-let url = "js/data.json";
-let unitinput = document.getElementById("unitinput");
-let resultsWrapper = $("#results-wrapper");
 
-xmlhttp.onreadystatechange = function() {
-  if (this.readyState == 4 && this.status == 200) {
-          var data = JSON.parse(this.responseText);
-          for (var i = 0; i < data.length; i++) {
-                var newUnit = {
-                  name : data[i].name,
-                  strongvs : data[i].strongvs,
-                  weakvs : data[i].weakvs,
-                  uniqueweakvs : data[i].uniqueweakvs
-                };
-                allData.push(newUnit);
-              };
-            };
-    }
+const fetch = require("node-fetch");
+const fs = require("fs");
+const path = require("path");
+const data = fs.readFileSync(path.join(__dirname, "../data/allEmployees.json")); //takes all units from Data folder
 
-xmlhttp.open("GET", url, true);
-xmlhttp.send();
+const employeesArray = () => {
+  let allEmployees = [];
+  var employees = JSON.parse(data);
+  for(value of employees) {
+    allEmployees.push(value.email);
+  }
+  return allEmployees;
+}
 
+const employeesEmails = employeesArray();
+
+module.exports = {
+  employeesEmails
+}
+
+/*
 function searcher(query) {
     resultsWrapper.empty();
     let siegeFlag = "";
@@ -44,8 +42,5 @@ function searcher(query) {
         } 
     });
 
-}
+}*/
 
-module.exports = {
-    allData
-}
